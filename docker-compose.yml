@@ -1,0 +1,37 @@
+version: "3.7"
+services:
+  app:
+    env_file:
+      - .env
+    container_name: app
+    image: app
+    volumes:
+      - ./controllers:/app/controllers
+    ports:
+      - "5001:5001"
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    tty: true
+    stdin_open: true
+    depends_on:
+      - selenium
+    networks:
+      - default
+    restart: always
+
+  selenium:
+    env_file:
+      - .env
+    container_name: selenium
+    shm_size: '2gb'
+    image: seleniarm/standalone-chromium:latest
+    ports:
+      - "4444:4444"
+      - "5900:5900"
+      - "7900:7900"
+    volumes:
+      - /dev/shm:/dev/shm
+    networks:
+      - default
+    restart: always

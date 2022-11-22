@@ -1,6 +1,6 @@
 from aiogram.utils import executor
 
-from views import dp
+from views import dispatcher
 
 if __name__ == '__main__':
-    executor.start_polling(dp, skip_updates=True)
+    executor.start_polling(dispatcher, skip_updates=True)
