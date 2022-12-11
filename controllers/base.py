@@ -1,9 +1,12 @@
 from abc import ABC, abstractmethod
 from dataclasses import asdict
+from logging import getLogger
 from typing import List, Tuple
 
 from app import driver
 from views.base import UserInputResult
+
+log = getLogger(__name__)
 
 
 class BaseController(ABC):
@@ -18,7 +21,8 @@ class BaseController(ABC):
     def _get_search_url(self) -> str:
         raise NotImplemented()
 
-    def check_requirements(self, requirements: UserInputResult) \
+    @staticmethod
+    def check_requirements(requirements: UserInputResult) \
             -> UserInputResult:
         if requirements.price_from is None:
             requirements.price_from = 500
@@ -30,5 +34,5 @@ class BaseController(ABC):
             requirements.footage_to = 150
 
         user_set_params = {k: v for k, v in asdict(requirements).items() if v}
-        print(f'user set search params: {user_set_params}')
+        log.info(f'user set search params: {user_set_params}')
         return requirements
